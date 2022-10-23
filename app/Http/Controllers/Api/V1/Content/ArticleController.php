@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Jobs\PostComment;
 use App\Jobs\IncrementViewCount;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends BaseController
@@ -288,16 +289,28 @@ class ArticleController extends BaseController
     public function likeArticle(Request $request, $id): JsonResponse
     {
         //get article
+        try {
+            DB::beginTransaction();
         $article = $this->article::lockForUpdate()->find($id);
-        if (!$article) return $this->sendError('Article not found.');
+        if (!$article){
+            DB::rollBack();
+            return $this->sendError('Article not found.');
+        }
         //increment likes count
         $article->likes_count = $article->likes_count + 1;
         $article->save();
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->sendError('Error, please try again.');
+        }
         $data = [
             'likes_count' => $article->likes_count,
         ];
         return $this->sendResponse($data, 'Article liked successfully.');
     }
+
+
 
 
 }

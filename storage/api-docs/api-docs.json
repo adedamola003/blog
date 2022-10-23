@@ -602,6 +602,193 @@
                     }
                 }
             }
+        },
+        "/api/v1/publisher/list_tags": {
+            "get": {
+                "tags": [
+                    "Publishing"
+                ],
+                "summary": "Publishing",
+                "description": "Display list of all tas",
+                "operationId": "TagsList",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "data": {
+                                                    "properties": {
+                                                        "message": {
+                                                            "type": "string",
+                                                            "example": "Tags retrieved successfully."
+                                                        }
+                                                    },
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "fashion"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/publisher/create": {
+            "post": {
+                "tags": [
+                    "Publishing"
+                ],
+                "summary": "Publish an article",
+                "description": "Publish an article",
+                "operationId": "Publich article",
+                "requestBody": {
+                    "description": "Comment on an article",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "body",
+                                    "tags",
+                                    "cover_image_url",
+                                    "cover_image_thumbnail_url"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "jsljslkls"
+                                    },
+                                    "body": {
+                                        "type": "text",
+                                        "example": "Culpa facere laborum asperiores reiciendis. Optio et fugit perferendis aut placeat. Exercitationem expedita ipsam placeat quia eaque quaerat iure aut."
+                                    },
+                                    "tags": {
+                                        "type": "string",
+                                        "example": "dolorem,fashion"
+                                    },
+                                    "cover_image_url": {
+                                        "type": "string",
+                                        "example": "https://via.placeholder.com/350x150"
+                                    },
+                                    "cover_image_thumbnail_url": {
+                                        "type": "string",
+                                        "example": "https://via.placeholder.com/150/09f/fff.png"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Returns parameters are not vaid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "title is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Returns if article is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "error": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": [
+                                                            "Article not found"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "data": {
+                                                    "properties": {
+                                                        "articleId": {
+                                                            "type": "string",
+                                                            "example": "jsljslkls"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Article published successfully."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

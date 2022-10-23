@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\RegisteredUserController;
 use App\Http\Controllers\Api\V1\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Api\V1\Content\ArticleController;
+use App\Http\Controllers\Api\V1\Content\PublisherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,11 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1'], functi
     Route::post('auth/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest');
     Route::post('auth/reset-password', [NewPasswordController::class, 'store'])->middleware('guest');
 
-    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
+        //Publishers Routes
+        Route::get('publisher/list_tags', [PublisherController::class, 'getTags']);
+        Route::post('publisher/create', [PublisherController::class, 'publishArticle']);
+
 
     });
 
