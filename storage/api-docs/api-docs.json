@@ -1,0 +1,607 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "This Blog API",
+        "description": "Implementation of blog API",
+        "contact": {
+            "email": "admin@admin.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Sign in",
+                "description": "Login by email, password",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid username and/or password"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string",
+                                                    "example": "Invalid username and/or password"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Returns after a succesful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login successful"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "accessToken": {
+                                                    "type": "string",
+                                                    "example": "1|vYyNOAhaS6ZjNnbJo6RnLg5pl40vEmEV97iObp3B"
+                                                },
+                                                "name": {
+                                                    "type": "boolean",
+                                                    "example": "Adedamola"
+                                                },
+                                                "email": {
+                                                    "type": "boolean",
+                                                    "example": "adedamola@mail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": [
+                    "Register"
+                ],
+                "summary": "User Register",
+                "description": "User Register here",
+                "operationId": "Register",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "text"
+                                    },
+                                    "email": {
+                                        "type": "text"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Register Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Articles",
+                "description": "Display list a paginated list of all articles",
+                "operationId": "Articles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "data": {
+                                                    "properties": {
+                                                        "message": {
+                                                            "type": "string",
+                                                            "example": "Articles retrieved successfully."
+                                                        }
+                                                    },
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "1"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Iure voluptatem et optio sint iusto architecto et dicta."
+                                                            },
+                                                            "article_cover_thumbnail": {
+                                                                "type": "string",
+                                                                "example": "https://via.placeholder.com/150/09f/fff.png"
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "Culpa facere laborum asperiores reiciendis. Optio et fugit perferendis aut placeat. Exercitationem e"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/article/{id}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Article Details",
+                "description": "Display Details of an article",
+                "operationId": "Article Details",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Article ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Returns when article is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "data": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "example": "50"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Iure voluptatem et optio sint iusto architecto et dicta"
+                                                        },
+                                                        "cover_image_url": {
+                                                            "type": "string",
+                                                            "example": "https://via.placeholder.com/150/09f/fff.png"
+                                                        },
+                                                        "body": {
+                                                            "type": "string",
+                                                            "example": "Culpa facere laborum asperiores reiciendis. Optio et fugit perferendis aut placeat. Exercitationem expedita ipsam placeat quia eaque quaerat iure aut."
+                                                        },
+                                                        "cover_image_thumbnail_url": {
+                                                            "type": "string",
+                                                            "example": "https://via.placeholder.com/150/09f/fff.png"
+                                                        },
+                                                        "views_count": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        },
+                                                        "likes_count": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        },
+                                                        "comments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "subject": {
+                                                                        "type": "string",
+                                                                        "example": "hjfjt745gjfg"
+                                                                    },
+                                                                    "comment": {
+                                                                        "type": "string",
+                                                                        "example": "iksjwkwswims"
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string",
+                                                                        "example": "2022-01-01 00:00:00"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "tags": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "": {
+                                                                        "type": "string",
+                                                                        "example": "technology"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Article data retrieved successfully."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/article/1/comment": {
+            "post": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Comment on an article",
+                "description": "comment on an article",
+                "operationId": "Comment on an article",
+                "requestBody": {
+                    "description": "Comment on an article",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "body",
+                                    "subject"
+                                ],
+                                "properties": {
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "jsljslkls"
+                                    },
+                                    "body": {
+                                        "type": "text",
+                                        "example": "Culpa facere laborum asperiores reiciendis. Optio et fugit perferendis aut placeat. Exercitationem expedita ipsam placeat quia eaque quaerat iure aut."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Returns parameters are not vaid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "subject is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Returns if article is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "error": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": [
+                                                            "Article not found"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "data": {
+                                                    "properties": {
+                                                        "subject": {
+                                                            "type": "string",
+                                                            "example": "jsljslkls"
+                                                        },
+                                                        "comment": {
+                                                            "type": "string",
+                                                            "example": "Culpa facere laborum asperiores reiciendis. Optio et fugit perferendis aut placeat. Exercitationem expedita ipsam placeat quia eaque quaerat iure aut."
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2022-10-23T01:23:34.211613Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Your comment has been successfully sent"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/article/1/like": {
+            "post": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Like an article",
+                "description": "Like an article",
+                "operationId": "Like an article",
+                "requestBody": {
+                    "description": "Like an article",
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Returns if article is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "error": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": [
+                                                            "Article not found"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "data": {
+                                                    "properties": {
+                                                        "likes_count": {
+                                                            "type": "integer",
+                                                            "example": 4
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Your comment has been successfully sent"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
