@@ -32,7 +32,14 @@ class PublisherController extends BaseController
      * description="Display list of all tas",
      * operationId="TagsList",
      * tags={"Publishing"},
-
+     *    security={ {"bearer": {} }},
+        *     @OA\Response(
+     *           response=401,
+     *           description="Unauthenticated",
+     *           @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthenticated")
+     *           )
+     *      ),
      * @OA\Response(
      *     response=200,
      *     description="Success",
@@ -83,13 +90,13 @@ class PublisherController extends BaseController
      *      ),
      *      tags={"Publishing"},
      *     operationId="Publich article",
+     *     security={ {"bearer": {} }},
      *      @OA\Response(
      *           response=401,
      *           description="Returns parameters are not vaid",
      *           @OA\JsonContent(
      *              @OA\Property(property="message", type="string", example="title is required")
-     *           )
-     *      ),
+     *           ),
      *      @OA\Response(
      *           response=400,
      *           description="Returns if article is not found",
